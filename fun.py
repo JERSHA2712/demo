@@ -1,1 +1,1 @@
-print("Coding is fun only for Tam")
+print("Coding is fun only for Jersha")
