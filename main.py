@@ -3,21 +3,21 @@ import pyttsx3
 import datetime
 import kivy
 from kivy.app import App
-from kivy.uix.label import Label
+from kivy.uix.widget import Widget
+from kivy.properties import ObjectProperty
 from kivy.lang import Builder
+
+
 
 #setting up voice
 tasha=pyttsx3.init()
 voices= tasha.getProperty('voices')
 tasha.setProperty('voice', voices[1].id)  #female voice
-tasha.setProperty('rate', 175)            #wordsperminute
+tasha.setProperty('rate', 175)            #words per minute
 
 #setting up recognizer
 listener= sr.Recognizer()
 
-
-class MyLabelApp(App):
-    def build(self):
 
 
 
@@ -33,23 +33,30 @@ def greet():
     say("I am your virtual voice assistant, Tasha 2 point 0!")
 
 def say(info):
-    label = MyLabelApp()
-    label.run()
     tasha.say(info)
     tasha.runAndWait()
 
 def listen():
     try:
         with sr.Microphone() as ears:
-            print("Listening...")
             audio = listener.listen(ears)
             data = listener.recognize_google(audio)
-            print(data)
-            data= data.lower()
+            return data
     except:
-            print("There must be something wrong...")
+        return "Something must be wrong"
 
-greet()
+Builder.load_file('output_label.kv')
+
+class MyLayout(Widget):
+    def press(self):
+        output = listen()
+        self.ids.outputLabel.text = output
+
+class MyApp(App):
+    def build(self):
+        return MyLayout()
+
+MyApp().run()
 
 
 
