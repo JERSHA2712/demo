@@ -56,7 +56,7 @@ class MyApp(App):
     def build(self):
         return MyLayout()
 
-
+MyApp().run()
 
 
 
